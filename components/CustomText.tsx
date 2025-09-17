@@ -1,10 +1,25 @@
 import { Text, TextProps } from 'react-native';
 
-type Props = TextProps;
+import { globalStyles } from '@/styles/global-styles';
 
-const CustomText = ({ children, ...props }: Props) => {
+interface Props extends TextProps {
+  variant: 'h1' | 'h2';
+}
+
+const CustomText = ({ children, variant, ...props }: Props) => {
   return (
-    <Text style={{ color: 'white' }} {...props}>{children}</Text>
+    <Text
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      style={[
+        { color: 'white', fontFamily: 'SpaceMono' },
+        variant === 'h1' && globalStyles.mainResult,
+        variant === 'h2' && globalStyles.subResult
+      ]}
+      {...props}
+    >
+      {children}
+    </Text>
   )
 }
 
