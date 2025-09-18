@@ -1,14 +1,16 @@
 import { View } from 'react-native';
 
-import CustomText from '@/components/CustomText';
+import { useCalculator } from '@/hooks/useCalculator';
 
 import CalculatorButton from '@/components/CalculatorButton';
+import CustomText from '@/components/CustomText';
+
 import { Colors } from '@/constants/theme';
-import { useCalculator } from '@/hooks/useCalculator';
+
 import { globalStyles } from '@/styles/global-styles';
 
 const CalculatorApp = () => {
-  const { formula, buildNumber } = useCalculator();
+  const { formula, clean, toogleSign, deleteLast, buildNumber } = useCalculator();
 
   return (
     <View style={ globalStyles.calculatorContainer }>
@@ -29,19 +31,19 @@ const CalculatorApp = () => {
           label='C'
           textColor='black'
           backgroundColor={Colors.lightGray}
-          onPress={() => console.log('C')}  
+          onPress={clean}  
         />
         <CalculatorButton
           label='+/-'
           textColor='black'
           backgroundColor={Colors.lightGray}
-          onPress={() => console.log('+ / -')}  
+          onPress={toogleSign}  
         />
         <CalculatorButton
           label='Del'
           textColor='black'
           backgroundColor={Colors.lightGray}
-          onPress={() => console.log('Del')}  
+          onPress={deleteLast}  
         />
         <CalculatorButton
           label='÷'
