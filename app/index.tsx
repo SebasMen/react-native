@@ -10,7 +10,19 @@ import { Colors } from '@/constants/theme';
 import { globalStyles } from '@/styles/global-styles';
 
 const CalculatorApp = () => {
-  const { formula, clean, toogleSign, deleteLast, buildNumber } = useCalculator();
+  const {
+    formula,
+    prevNumber,
+    clean,
+    toogleSign,
+    deleteLast,
+    buildNumber,
+    divideOperation,
+    multiplyOperation,
+    substractOperation,
+    addOperation,
+    calculateResult
+  } = useCalculator();
 
   return (
     <View style={ globalStyles.calculatorContainer }>
@@ -22,7 +34,11 @@ const CalculatorApp = () => {
         }}
       >
         <CustomText variant='h1'>{formula}</CustomText>
-        <CustomText variant='h2'>2500</CustomText>
+        {formula === prevNumber ? (
+          <CustomText variant='h2'> </CustomText>
+        ) : (
+          <CustomText variant='h2'>{prevNumber}</CustomText>
+        )}
       </View>
 
       {/* Filas de botones */}
@@ -48,7 +64,7 @@ const CalculatorApp = () => {
         <CalculatorButton
           label='÷'
           backgroundColor={Colors.orange}
-          onPress={() => console.log('÷')}  
+          onPress={divideOperation}  
         />
       </View>
 
@@ -68,7 +84,7 @@ const CalculatorApp = () => {
         <CalculatorButton
           label='x'
           backgroundColor={Colors.orange}
-          onPress={() => console.log('x')}  
+          onPress={multiplyOperation}  
         />
       </View>
 
@@ -88,7 +104,7 @@ const CalculatorApp = () => {
         <CalculatorButton
           label='-'
           backgroundColor={Colors.orange}
-          onPress={() => console.log('-')}  
+          onPress={substractOperation}  
         />
       </View>
       
@@ -108,7 +124,7 @@ const CalculatorApp = () => {
         <CalculatorButton
           label='+'
           backgroundColor={Colors.orange}
-          onPress={() => console.log('+')}  
+          onPress={addOperation}  
         />
       </View>
       
@@ -125,7 +141,7 @@ const CalculatorApp = () => {
         <CalculatorButton
           label='='
           backgroundColor={Colors.orange}
-          onPress={() => console.log('=')}  
+          onPress={calculateResult}  
         />
       </View>
     </View>

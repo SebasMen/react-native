@@ -15,8 +15,21 @@ export const useCalculator = () => {
   const [prevNumber, setPrevNumber] = useState('0');
 
   useEffect(() => {
-    setFormula(number);
+    // Si existe un simbolo de operacion, actualizar la formula
+    if (lastOperation.current) {
+      const firstFormulaPart = formula.split(' ').at(0);
+      setFormula(`${firstFormulaPart} ${lastOperation.current} ${number}`);
+    } else {
+      setFormula(number);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [number])
+
+  useEffect(() => {
+    const subResult = calculateSubResult();
+    setPrevNumber(`${subResult}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formula])
 
   const clean = () => {
     setNumber('0');
@@ -48,6 +61,67 @@ export const useCalculator = () => {
     }
 
     setNumber('0');
+  }
+
+  const setLastNumber = () => {
+    calculateResult();
+    
+    if (number.endsWith('.')) {
+      setPrevNumber(number.slice(0, -1));
+    } 
+
+    setPrevNumber(number);
+    setNumber('0');
+  }
+
+  const divideOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.divide;
+  }
+
+  const multiplyOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.multiply;
+  }
+
+  const substractOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.subtract;
+  }
+
+  const addOperation = () => {
+    setLastNumber();
+    lastOperation.current = Operator.add;
+  }
+
+  const calculateSubResult = () => {
+    const [firstValue, operator, secondValue] = formula.split(' ');
+
+    const num1 = Number(firstValue);
+    const num2 = Number(secondValue);
+
+    if (isNaN(num2)) return num1;
+
+    switch (operator) {
+      case Operator.divide:
+        return num1 / num2;
+      case Operator.multiply:
+        return num1 * num2;
+      case Operator.subtract:
+        return num1 - num2;
+      case Operator.add:
+        return num1 + num2;
+      default:
+        throw new Error(`Operation ${operator} not implemented`);
+    }
+  }
+
+  const calculateResult = () => {
+    const result = calculateSubResult();
+    setFormula(`${result}`);
+
+    lastOperation.current = undefined;
+    setPrevNumber('0');
   }
 
   const buildNumber = (numberString: string) => {
@@ -83,5 +157,11 @@ export const useCalculator = () => {
     toogleSign,
     deleteLast,
     buildNumber,
+    divideOperation,
+    multiplyOperation,
+    substractOperation,
+    addOperation,
+    calculateSubResult,
+    calculateResult
   }
 }
